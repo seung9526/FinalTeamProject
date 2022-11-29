@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/styles_user.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles_blogCreate.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles_blogCreate_min.css}" rel="stylesheet" />
+    <title>Title</title>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-html">
+    <input id="tab-1" type="radio" name="tab" class="sign-in" th:checked = "${check}"><label for="tab-1" class="tab">Login</label>
+    <input id="tab-2" type="radio" name="tab" class="sign-up" th:checked = "!${check}"><label for="tab-2" class="tab">Sign Up</label>
+    <div class="login-form">
+      <form th:action="@{/user/login}" method="post">
+        <div class="sign-in-htm">
+          <div class="group">
+            <label class="label" >ID</label>
+            <input type="text" class="input" name="username">
+          </div>
+          <div class="group">
+            <label for="pass" class="label" >Password</label>
+            <input type="password" class="input" data-type="password" name="password">
+          </div>
+<!--          <div class="group">-->
+<!--            <input id="check" type="checkbox" class="check" checked>-->
+<!--            <label for="check"><span class="icon"></span> Keep me Signed in</label>-->
+<!--          </div>-->
+          <div class="group">
+            <input type="submit" class="button" value="Sign In">
+          </div>
+<!--          <div class="hr"></div>-->
+<!--          <div class="foot-lnk">-->
+<!--            <a href="#forgot">Forgot Password?</a>-->
+<!--          </div>-->
+        </div>
+      </form>
+      <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+        <div class="sign-up-htm">
+          <div class="group">
+            <label class="label">ID</label>
+            <input type="text" class="input" th:field="*{id}">
+          </div>
+          <div class="group">
+            <label for="pass" class="label">Password</label>
+            <input type="password" class="input" th:field="*{password1}">
+          </div>
+          <div class="group">
+            <label for="pass" class="label">Repeat Password</label>
+            <input type="password" class="input" th:field="*{password2}">
+          </div>
+          <div class="group">
+            <label for="pass" class="label">NickName</label>
+            <input id="pass" type="text" class="input" th:field="*{nickname}">
+          </div>
+          <div class="group">
+            <input type="submit" class="button" value="Sign Up">
+          </div>
+          <div class="alert alert-dismissible alert-secondary" th:if="${#fields.hasAnyErrors()}">
+            <strong><div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div></strong>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

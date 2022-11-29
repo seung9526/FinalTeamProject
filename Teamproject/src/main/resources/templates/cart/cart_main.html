@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<head>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link th:href="@{/css/style_product_cart.css}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link th:href="@{/css/styles_cart.css}" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="container padding-bottom-3x mb-1">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+      <!--        <a class="navbar-brand" href="#!">Shop</a>-->
+      <a class="navbar-brand" th:href="@{/product/list}"><img th:src="@{/img/logo.png}" width="400px" height="150px"> </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/product/list}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/blog/list}">Blog</a></li>
+          <li class="nav-item "><a class="nav-link " sec:authorize="isAnonymous()" th:href="@{/user/login}">Login</a></li>
+          <li class="nav-item"><a class="nav-link " sec:authorize="isAuthenticated()" th:href="@{/user/logout}">Logout</a></li>
+          <li class="nav-item"><a class="nav-link " sec:authorize="isAuthenticated()" th:href="@{/purchase/list}">구매목록</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br><br><br><br><br><br>
+  <!-- Shopping Cart-->
+  <div class="table-responsive shopping-cart">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>제품명</th>
+        <th class="text-center">개수</th>
+        <th class="text-center">가격</th>
+        <!--th class="text-center">할인</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="cart : ${cartList}">
+        <td>
+          <div class="product-item">
+            <a class="product-thumb" th:href="@{|/product/view/${cart.product.pno}|}"><img th:src="@{|/img/${cart.product.imageFileName}|}" alt="Product"></a>
+            <div class="product-info">
+              <h4 class="product-title"><a th:href="@{|/product/view/${cart.product.pno}|}" th:text="${cart.product.name}"></a></h4>
+            </div>
+          </div>
+        </td>
+        <td class="text-center">
+          <a th:href="@{|/cart/plus/${cart.number}|}"><button>+</button></a>
+          <p th:text="${cart.productCount}"></p>
+          <a th:href="@{|/cart/minus/${cart.number}|}"><button>-</button></a>
+        </td>
+        <td class="text-center text-lg text-medium" th:text="${cart.product.price}*${cart.productCount}"></td>
+        <td class="text-center"><a class="remove-from-cart" th:href="@{|/cart/delete/${cart.number}|}" data-toggle="tooltip" title="" data-original-title="Remove item"><i class="fa fa-trash"></i></a></td>
+      </tr>
+      <!--<tr>
+        <td>
+          <div class="product-item">
+            <a class="product-thumb" href="#"><img src="https://via.placeholder.com/220x180/5F9EA0/000000" alt="Product"></a>
+            <div class="product-info">
+              <h4 class="product-title"><a href="#">Daily Fabric Cap</a></h4><span><em>Size:</em> XL</span><span><em>Color:</em> Black</span>
+            </div>
+          </div>
+        </td>
+        <td class="text-center">
+          <div class="count-input">
+            <select class="form-control">
+              <option>1</option>
+              <option selected="">2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+        </td>
+        <td class="text-center text-lg text-medium">$24.89</td>
+        <td class="text-center">—</td>
+        <td class="text-center"><a class="remove-from-cart" href="#" data-toggle="tooltip" title="" data-original-title="Remove item"><i class="fa fa-trash"></i></a></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="product-item">
+            <a class="product-thumb" href="#"><img src="https://via.placeholder.com/220x180/9932CC/000000" alt="Product"></a>
+            <div class="product-info">
+              <h4 class="product-title"><a href="#">Cole Haan Crossbody</a></h4><span><em>Size:</em> -</span><span><em>Color:</em> Turquoise</span>
+            </div>
+          </div>
+        </td>
+        <td class="text-center">
+          <div class="count-input">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+        </td>
+        <td class="text-center text-lg text-medium">$200.00</td>
+        <td class="text-center">—</td>
+        <td class="text-center"><a class="remove-from-cart" href="#" data-toggle="tooltip" title="" data-original-title="Remove item"><i class="fa fa-trash"></i></a></td>
+      </tr>-->
+      </tbody>
+    </table>
+  </div>
+  <div class="shopping-cart-footer">
+    <div class="column text-lg">전체금액: <span class="text-medium" th:text="${totalPrice}">1</span></div>
+  </div>
+  <div class="shopping-cart-footer">
+    <div class="column"><a class="btn btn-outline-secondary" th:href="@{/product/list}"><i class="icon-arrow-left"></i>&nbsp;Back to Shopping</a></div>
+    <div class="column" th:if="${cartList.size() > 0}"><a class="btn btn-success" th:href="@{/cart/buy}">결제</a></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

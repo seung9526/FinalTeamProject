@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Blog Home - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles_blogMain.css}" rel="stylesheet" />
+</head>
+<body>
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/blog/list}">Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" th:href="@{/product/list}">쇼핑몰</a></li>
+                <li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a></li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">내정보</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{/blog/create}">글쓰기</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" th:href="@{/user/modify}">회원 정보 수정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/user/logout}">로그아웃</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Page header with logo and tagline-->
+<header class="py-5 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-5">
+            <h1 class="fw-bolder">블로그에 오신것을 환영합니다</h1>
+            <p class="lead mb-0">자유롭게 포스트를 작성하고 기록을 남기세요</p>
+        </div>
+    </div>
+</header>
+<!-- Page content-->
+<div class="container">
+    <div class="row">
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+            <!-- 포스트 리스트-->
+            <div class="row" th:if="${blogBoardList != null}">
+                <div class="col-lg-6">
+                    <!-- Blog post-->
+                    <div class="card mb-4" th:each="blogBoard : ${blogBoardList}" th:if="${blogBoardStat.odd}">
+<!--                        <a th:href="@{|/blog/detail/${blogBoard.bno}|}">-->
+<!--                            <div th:each="imageFile : ${fileList}">-->
+<!--                                <img class="card-img-top" th:src="@{|/img/${imageFile.savedName}|}" alt="..." />-->
+<!--                            </div>-->
+<!--                        </a>-->
+                        <div class="card-body">
+                            <div class="small text-muted" th:text="${blogBoard.createDate}"></div>
+                            <h2 class="card-title h4" th:text="${blogBoard.title}"></h2>
+                            <p class="card-text" th:text="${blogBoard.content}"></p>
+                            <a class="btn btn-primary" th:href="@{|/blog/detail/${blogBoard.bno}|}">Read more →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" th:if="${blogBoardList.size() > 1}">
+                    <!-- Blog post-->
+                    <div class="card mb-4" th:each="blogBoard : ${blogBoardList}" th:if="${blogBoardStat.even}">
+                        <a th:href="@{|/blog/detail/${blogBoard.bno}|}">
+                            <div th:each="imageFile : ${fileList}">
+                                <img class="card-img-top" th:src="@{|/img/${imageFile.savedName}|}" alt="..." />
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <div class="small text-muted" th:text="${blogBoard.createDate}"></div>
+                            <h2 class="card-title h4" th:text="${blogBoard.title}"></h2>
+                            <p class="card-text" th:text="${blogBoard.content}"></p>
+                            <a class="btn btn-primary" th:href="@{|/blog/detail/${blogBoard.bno}|}">Read more →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination-->
+            <nav aria-label="Pagination" >
+                <hr class="my-0" />
+                <ul class="pagination justify-content-center my-4" th:if="${pageList.totalPages > 1}" >
+                    <li class="page-item"
+                        th:each="page : ${#numbers.sequence(0, pageList.totalPages-1)}"
+                        th:unless="${page == pageList.number}"
+                        th:if="${page < pageList.number}"
+                    >
+                        <a class="page-link" th:href="@{|/blog/list?page=${page}}" th:text="${page+1}"></a>
+                    </li>
+                    <li class="page-item active"
+                        aria-current="page"
+                        th:each="page : ${#numbers.sequence(0, pageList.totalPages-1)}"
+                        th:if="${page == pageList.number}"
+                    >
+                        <a class="page-link" th:href="@{|/blog/list?page=${page}}" th:text="${page+1}"></a>
+                    </li>
+                    <li class="page-item"
+                        th:each="page : ${#numbers.sequence(0, pageList.totalPages-1)}"
+                        th:unless="${page == pageList.number}"
+                        th:if="${page > pageList.number}"
+                    >
+                        <a class="page-link" th:href="@{|/blog/list?page=${page}}" th:text="${page+1}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <form th:action="@{/blog/search}" th:object="${boardSearchForm}" method="post">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" th:field="*{search}" />
+                            <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
