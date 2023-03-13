@@ -26,3 +26,7 @@
 - 상품목록 및 수량변경
 - 블로그 CRUD
 - 회원가입 & 로그인 & 로그아웃
+
+## ERD 구성도
+
+![image02](https://user-images.githubusercontent.com/38849788/224592738-d711c2dd-14bb-468a-86fc-9d9891fa90e4.png)
