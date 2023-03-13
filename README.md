@@ -28,5 +28,7 @@
 - 회원가입 & 로그인 & 로그아웃
 
 ## ERD 구성도
+<div align="center">
+<img src="https://user-images.githubusercontent.com/38849788/224592738-d711c2dd-14bb-468a-86fc-9d9891fa90e4.png"  width="650" height="450">
+<
 
-![image02](https://user-images.githubusercontent.com/38849788/224592738-d711c2dd-14bb-468a-86fc-9d9891fa90e4.png)
